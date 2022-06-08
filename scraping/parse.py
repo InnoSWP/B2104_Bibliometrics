@@ -1,24 +1,30 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class Scraper:
-    def __init__(self, headless=False):
+    def __init__(self, driver_folder, headless=False):
         self.authors = dict()  # (author id) -> (full data on author)
         self.author_to_paper = dict()  # (person id) -> [(paper id)]
         self.papers = dict()  # (paper id) -> (full data on paper)
 
-        driver_folder = "path to google chrome driver"
+        self.authors_num = 0
+        self.papers_num = 0
+        self.subjects = dict()  # (Area of research) -> (Number of articles)
+
         path = driver_folder + "chromedriver.exe"
         options = Options()
         options.headless = headless
         self.driver = webdriver.Chrome(path, options=options)
+        self.driver.implicitly_wait(5)
         print("Scraper " + str(id(self)) + " created")
         with open('scraping/data.html'):
             pass
+
+    def parse(self):
+        self._get_general_university_stats()
+        self._get_authors_list()
 
     # Returns a list of scopus ids
     def _get_authors_list(self):
@@ -41,16 +47,19 @@ class Scraper:
 
     def _get_general_university_stats(self):
         print("Scraper " + str(id(self)) + " parses university general statistics")
+
         url = "https://www.scopus.com/affil/profile.uri?afid=60105869"
         self.driver.get(url)
-        data = self.driver.page_source
-        subject_list = self.driver.find_element(By.ID, "subjectList")
-        affiliation_general = self.driver.find_element(By.ID, "affilAddlSec")
-        print(subject_list.text)
-        print("=========================================")
-        print(affiliation_general.text)
-        with open('scraping/data.html', 'w', encoding='utf-8') as file:
-            file.write(data)
+
+        subject_distribution = self.driver.find_element(By.ID, "subjectList").text.split('\n')
+        affiliation_general = self.driver.find_element(By.ID, "affilAddlSec").text.split('\n')
+
+        self.papers_num = int(''.join(affiliation_general[1].split(' ')))  # The line is stored like '1 225', not '1225'
+        self.authors_num = int(affiliation_general[3])
+
+        for ind in range(0, len(subject_distribution), 2):
+            self.subjects[subject_distribution[ind]] = int(subject_distribution[ind + 1])
+
         self.driver.quit()
 
     def _get_papers(self, author_id):

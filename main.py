@@ -1,7 +1,8 @@
 from scraping.parse import Scraper
 
 if __name__ == '__main__':
-    scraper = Scraper("Path to Chrome driver")
-    scraper._get_authors_list()
+    scraper = Scraper("Path to Chrome driver folder")
+    scraper._get_paper_data(85087819719)
     with open('scraping/data.html', 'w') as file:
         file.truncate(0)
+

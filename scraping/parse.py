@@ -41,6 +41,27 @@ class Scraper:
         print("Scraper " + str(id(self)) + " parses author " + str(author_id))
         self.driver.get("https://www.scopus.com/authid/detail.uri?authorId=" + str(author_id))
         data = self.driver.page_source
+        self.driver.refresh()
+        time.sleep(2)
+        nums = driver.find_elements(by=By.XPATH, value="//els-typography[@variant='tertiary-header']")
+        rects = driver.find_element(by=By.CLASS_NAME,
+                        value="highcharts-series.highcharts-series-0.highcharts-column-series.highcharts-tracker").find_elements(
+            by=By.CSS_SELECTOR, value="rect")
+        pathes=driver.find_element(by=By.CLASS_NAME, value="highcharts-markers.highcharts-series-1.highcharts-line-series"
+                                   ".highcharts-tracker").find_elements(by=By.CSS_SELECTOR, value="path")
+        print(driver.find_element(by=By.CLASS_NAME, value="AuthorHeader-module__syvlN.margin-size-4-t").text, author_id)
+        
+        print(f"Documents by author: {nums[0].text}, Citations: {nums[1].text}, H-index: {nums[2].text}")
+        
+        print("Number of citations by year:")
+        for i in rects:
+            i1=i.accessible_name.split()
+            print(i1[1][0:4]+": "+i1[2][:len(i1[2])-1])
+        
+        print("Number of papers by year:")
+        for i in pathes:
+            i1 = i.accessible_name.split()
+            print(i1[1][0:4] + ": " + i1[2][:len(i1[2]) - 1])
         self.driver.quit()
         with open('scraping/data.html', 'w', encoding='utf-8') as file:
             file.write(data)

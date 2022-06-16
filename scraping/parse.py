@@ -9,7 +9,7 @@ class Scraper:
     def __init__(self):
         with open('scraping/key.txt', 'r') as file:
             key = file.readline()
-        self.client = ElsClient(key)
+        self.client = ElsClient('70ec981569c73615021911465abb2f94')
 
     def parse(self, preload=True):
         print('Scraper', id(self), 'began parsing')
@@ -32,8 +32,6 @@ class Scraper:
 
         papers = pd.merge(papers, paper_affils_df, on='id', how="left")
         papers.to_csv('data/new_papers.csv', index=False)
-
-        haha = 0
 
         authors = dict()
         for author_id in author_ids:
@@ -58,7 +56,12 @@ class Scraper:
         author_affils = dict()
         innopolis_affiliated = set()
         for response in authors_response:
-            affils = response['affiliation']
+            # Some authors may not have affiliation, in this case it is replaced by their current affiliation
+            if 'affiliation' not in response:
+                affils = {'@id': self._get_author_current_affil(response['@auid'])}
+            else:
+                affils = response['affiliation']
+
             if not isinstance(affils, list):
                 affils = [affils]
             author_affils[response['@auid']] = list()
@@ -93,6 +96,12 @@ class Scraper:
     def _get_author_by_id(self, scopus_id):
         author = self.client.exec_request('https://api.elsevier.com/content/author/author_id/' + str(scopus_id))
         return author
+
+    def _get_author_current_affil(self, scopus_id):
+        author_affil = self.client. \
+            exec_request('https://api.elsevier.com/content/author/author_id/' + str(scopus_id))[
+            'author-retrieval-response'][0]
+        return author_affil['affiliation-current']['@id']
 
     def _get_university_info(self):
         info = ElsAffil(affil_id='60105869')

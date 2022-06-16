@@ -9,7 +9,7 @@ class Scraper:
     def __init__(self):
         with open('scraping/key.txt', 'r') as file:
             key = file.readline()
-        self.client = ElsClient('70ec981569c73615021911465abb2f94')
+        self.client = ElsClient(key)
 
     def parse(self, preload=True):
         print('Scraper', id(self), 'began parsing')
@@ -64,6 +64,7 @@ class Scraper:
                 if author_current_affil == '60105869':
                     innopolis_affiliated.add(author_response['@auid'])
                 continue
+
             else:
                 affils = author_response['affiliation']
 

@@ -31,7 +31,7 @@ class Scraper:
                                                   'authors_affils': paper_authors_affils_data.values()})
 
         papers = pd.merge(papers, paper_affils_df, on='id', how="left")
-        papers.to_csv('data/new_papers.csv', index=False)
+        papers.to_csv('papers_full.csv', index=False)
 
         authors = dict()
         for author_id in author_ids:
@@ -55,24 +55,26 @@ class Scraper:
 
         author_affils = dict()
         innopolis_affiliated = set()
-        for response in authors_response:
-            # Some authors may not have affiliation, in this case it is replaced by their current affiliation
-            if 'affiliation' not in response:
-                affils = {'@id': self._get_author_current_affil(response['@auid'])}
+        for author_response in authors_response:
+            # Some authors may not have affiliation in the paper,
+            # in this case it is replaced by their current affiliation
+            if 'affiliation' not in author_response:
+                author_current_affil = self._get_author_current_affil(author_response['@auid'])
+
+                if author_current_affil == '60105869':
+                    innopolis_affiliated.add(author_response['@auid'])
+                continue
             else:
-                affils = response['affiliation']
+                affils = author_response['affiliation']
 
             if not isinstance(affils, list):
                 affils = [affils]
-            author_affils[response['@auid']] = list()
+            author_affils[author_response['@auid']] = list()
             for affil in affils:
-                author_affils[response['@auid']].append(affils_names[affil['@id']])
+                author_affils[author_response['@auid']].append(affils_names[affil['@id']])
                 if affil['@id'] == '60105869':
-                    innopolis_affiliated.add(response['@auid'])
+                    innopolis_affiliated.add(author_response['@auid'])
 
-        # if len(innopolis_affiliated) == 0:
-        #     pass
-        #     # Do not actually know what to do in this case
         return author_affils, innopolis_affiliated
 
     def _get_paper_citations(self, paper_id):

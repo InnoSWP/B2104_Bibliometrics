@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def quartile_of(a):
-    df = pd.read_excel('CiteScore-2011-2020-new-methodology-October-2021.xlsb', sheet_name=1, engine='pyxlsb')
+    df = pd.read_excel('CiteScore-2011-2020-new-methodology-October-2021.xlsb', sheet_name=0, engine='pyxlsb')
     low = 0
     high = df.shape[0] - 1
     h = high

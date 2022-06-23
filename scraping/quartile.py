@@ -1,8 +1,8 @@
 import pandas as pd
 
 
-def quartile_of(a):
-    df = pd.read_excel('CiteScore-2011-2020-new-methodology-October-2021.xlsb', sheet_name=0, engine='pyxlsb')
+def quartile_of(a: int):
+    df = pd.read_excel('quartiles2020.xlsx', sheet_name=0)
     low = 0
     high = df.shape[0] - 1
     h = high
@@ -21,6 +21,3 @@ def quartile_of(a):
             high += 1
             return df.loc[low:high, "Quartile"].min()
     return -1
-
-
-print(quartile_of(21100836108))

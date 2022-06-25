@@ -8,9 +8,11 @@ import asyncio
 import os
 import pathlib
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_http_methods
 # Create your views here.
 
 @csrf_protect
+@require_http_methods(["GET"])
 def get(request, name, token):
 	if token == TOKEN:
 		try:
@@ -24,6 +26,7 @@ def get(request, name, token):
 		return HttpResponse('Invalid token')
 
 @csrf_protect
+@require_http_methods(["POST"])
 def update(request, token):
 	if token == TOKEN:
 		now = datetime.now()

@@ -7,8 +7,10 @@ from datetime import datetime
 import asyncio
 import os
 import pathlib
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 
+@csrf_protect
 def get(request, name, token):
 	if token == TOKEN:
 		try:
@@ -21,6 +23,7 @@ def get(request, name, token):
 	else:
 		return HttpResponse('Invalid token')
 
+@csrf_protect
 def update(request, token):
 	if token == TOKEN:
 		now = datetime.now()

@@ -1,8 +1,8 @@
 import pandas as pd
-from ElsapyCustom.elsclient import *
-from ElsapyCustom.elsprofile import *
-from ElsapyCustom.elssearch import *
-from ElsapyCustom.elsdoc import *
+from elsapy.elsclient import *
+from elsapy.elsprofile import *
+from elsapy.elssearch import *
+from elsapy.elsdoc import *
 
 
 class Scraper:
@@ -10,6 +10,7 @@ class Scraper:
         with open('scraping/key.txt', 'r') as file:
             key = file.readline()
         self.client = ElsClient(key)
+        self.client.__min_req_interval = 1  # Set request interval. Reduce for minor speed up at the cost of stability.
 
     def parse(self, preload=True):
         print('Scraper', id(self), 'began parsing')

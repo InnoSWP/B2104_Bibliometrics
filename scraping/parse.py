@@ -136,7 +136,7 @@ class Scraper:
 
         papers.to_csv('data/papers.csv', index=False)
         return papers
-    def quartile_of(a: int, year: str):
+    def quartile_of(self, a: int, year: str):
         df = dataframe["CiteScore " + year]
         low = 0
         high = df.shape[0] - 1

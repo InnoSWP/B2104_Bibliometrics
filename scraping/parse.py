@@ -11,6 +11,7 @@ class Scraper:
             key = file.readline()
         self.client = ElsClient(key)
         self.client.__min_req_interval = 1  # Set request interval. Reduce for minor speed up at the cost of stability.
+        dataframe = pd.read_excel('C.xlsx', sheet_name=None)
 
     def parse(self, preload=True):
         print('Scraper', id(self), 'began parsing')
@@ -135,3 +136,23 @@ class Scraper:
 
         papers.to_csv('data/papers.csv', index=False)
         return papers
+    def quartile_of(a: int, year: str):
+        df = dataframe["CiteScore " + year]
+        low = 0
+        high = df.shape[0] - 1
+        h = high
+        while low <= high:
+            mid = (high + low) // 2
+            if df.iloc[mid, 0] < a:
+                low = mid + 1
+            elif df.iloc[mid, 0] > a:
+                high = mid - 1
+            else:
+                low, high = mid, mid
+                while df.iloc[low, 0] == mid and low - 1 != -1:
+                    low -= 1
+                while df.iloc[high, 0] == mid and high + 1 != h + 1:
+                    high += 1
+                high += 1
+                return df.loc[low:high, "Quartile"].min()
+        return -1

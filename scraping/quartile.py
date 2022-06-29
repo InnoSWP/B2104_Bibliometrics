@@ -1,8 +1,8 @@
 import pandas as pd
 
 
-def quartile_of(a: int):
-    df = pd.read_excel('quartiles2020.xlsx', sheet_name=0)
+def quartile_of(a: int, year: str):
+    df = pd.read_excel('quartiles2020.xlsx', sheet_name="CiteScore " + year)
     low = 0
     high = df.shape[0] - 1
     h = high

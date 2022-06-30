@@ -11,7 +11,7 @@ class Scraper:
             key = file.readline()
         self.client = ElsClient(key)
         self.client.__min_req_interval = 1  # Set request interval. Reduce for minor speed up at the cost of stability.
-        dataframe = pd.read_excel('quartiles2020.xlsx', sheet_name=None)
+        dataframe = pd.read_excel('quartiles.xlsx', sheet_name=None)
 
     def parse(self, preload=True):
         print('Scraper', id(self), 'began parsing')

@@ -1,3 +1,10 @@
+<p align="center">
+    <a href="https://github.com/InnoSWP/B2104_Bibliometrics" alt="Contributors">
+        <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=green" /></a>
+    <a href="https://github.com/InnoSWP/B2104_Bibliometrics" alt="Contributors">
+        <img src="https://img.shields.io/static/v1?label=python&message=3.x&color=blue" /></a>
+</p>
+
 # Bibliometrics API
 
 This product uses web-scraping to provide an API to easily extract data from Elsveir (Scopus) database. 
@@ -6,6 +13,7 @@ This product uses web-scraping to provide an API to easily extract data from Els
 - [How to install?](#Installation)
 - [What features are available?](#Features)
 - [What datasource we use?](#Databases)
+- [Demonstration of the API](#Demo) 
 - [Contribution](#Contribution)
 - [License](#License)
 
@@ -37,6 +45,9 @@ Parse Scopus database for the following metrics:
 ### Sources
 This product fetches data about citation counts and affiliations from Scopus database. 
 Quartile data is pre-fetched from Scopus CiteScore
+
+## Demo
+You can see the demo of the product [here](https://drive.google.com/file/d/1zsY_d5nisFahe05f3yoVIECK7anDIS3U/view).
 
 ## Contribution
 You can help to develop this software by creating issues on GitHub or by making pull requests.

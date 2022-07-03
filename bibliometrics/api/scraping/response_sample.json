@@ -1,0 +1,49 @@
+{
+  "id": 85087819719,
+  "title": "Edge-Computing-Enabled Smart Cities: A Comprehensive Survey",
+  "publication_year": "October 2020",
+  "authors": {
+    "Khan, Latif U.": [
+      "Department of Computer Science and Engineering, Kyung Hee University. Yongin, 17104, South Korea"
+    ],
+    "Yaqoob, Ibrar": [
+      "Department of Computer Science and Engineering, Kyung Hee University. Yongin, 17104, South Korea"
+    ],
+    "Tran, Nguyen H.": [
+      "School of Computer Science, University of Sydney. Sydney, 2006, NSW, Australia"
+    ],
+    "Kazmi, S. M. Ahsan": [
+      "Department of Computer Science and Engineering, Kyung Hee University. Yongin, 17104, South Korea",
+      "Networks and Blockchain Lab, Secure System and Network Engineering, Innopolis University. Innopolis, 420500, Russian Federation"
+    ],
+    "Dang, Tri Nguyen": [
+      "Department of Computer Science and Engineering, Kyung Hee University. Yongin, 17104, South Korea"
+    ],
+    "Hong, Choong Seon": [
+      "Department of Computer Science and Engineering, Kyung Hee University. Yongin, 17104, South Korea"
+    ]
+  },
+  "source_type": "Журнал",
+  "work_type": "Статья",
+  "source_name": "IEEE Internet of Things Journal",
+  "source_quartile": 1,
+  "keywords": [
+    "Cloudlet",
+    "fog computing",
+    "Internet of Things (IoT)",
+    "micro data centers",
+    "mobile cloud computing (MCC)",
+    "mobile-edge computing",
+    "smart cities"
+  ],
+  "percentile": "99th percentile",
+  "doi": "10.1109/JIOT.2020.2987070",
+  "fwci": "14,46",
+  "citations": {
+    "2018": 0,
+    "2019": 0,
+    "2020": 14,
+    "2021": 57,
+    "2022": 29
+  }
+}

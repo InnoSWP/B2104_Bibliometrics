@@ -17,11 +17,13 @@ def get(request, name, token):
 	if token == TOKEN:
 		try:
 			db = open(str(pathlib.Path(__file__).parent.resolve()) + '/assets/' + str(name) + '.csv', 'rb')
-
 			return FileResponse(db)
-
 		except:
-			return HttpResponse('No such file or your request is processing!')
+			try:
+				db = open(str(pathlib.Path(__file__).parent.resolve()) + '/assets/' + str(name) + '.json', 'rb')
+				return FileResponse(db)
+			except:
+				return HttpResponse('No such file or your request is processing!')
 	else:
 		return HttpResponse('Invalid token')
 

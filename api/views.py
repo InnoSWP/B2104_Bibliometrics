@@ -1,38 +1,52 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import FileResponse
-from .settings import TOKEN
-import time
-from datetime import datetime
-import asyncio
-import os
-import pathlib
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.http import require_http_methods
+
 # Create your views here.
 
-@csrf_protect
-@require_http_methods(["GET"])
-def get(request, name, token):
-	if token == TOKEN:
-		try:
-			db = open(str(pathlib.Path(__file__).parent.resolve()) + '/assets/' + str(name) + '.csv', 'rb')
-			return FileResponse(db)
-		except:
-			try:
-				db = open(str(pathlib.Path(__file__).parent.resolve()) + '/assets/' + str(name) + '.json', 'rb')
-				return FileResponse(db)
-			except:
-				return HttpResponse('No such file or your request is processing!')
-	else:
-		return HttpResponse('Invalid token')
 
-@csrf_protect
-@require_http_methods(["POST"])
-def update(request, token):
-	if token == TOKEN:
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.http import FileResponse, HttpResponse
+from .settings import TOKEN
+from datetime import datetime
+import time
+import pathlib
+import threading
+from scraping.parse import Scraper
+import subprocess, shlex
+
+@api_view(['POST'])
+def getData(request):
+
+	if request.data['api-key'] and request.data['api-key'] == TOKEN:
+		try:
+			return Response(open(f'{str(pathlib.Path(__file__).parent.resolve())}/assets/{request.data["file-name"]}', 'rb'))
+		except:
+
+			return Response({'code' : 'Wrong file name or file is processing'})
+	else:
+		return Response({'code' : 'Wrong api token'})
+
+
+
+@api_view(['POST'])
+def processData(request):
+	if request.data['api-key'] and request.data['api-key'] == TOKEN:
+
 		now = datetime.now()
 		current_time = now.strftime("%Y/%m/%d-%H:%M:%S")
-		return HttpResponse('DB will be uploaded with name "' + current_time + '"')
+
+		scraper = Scraper()
+
+		t = threading.Thread(target = scraper.parse)
+		t.start()
+		t.join()
+
+
+		return Response({'name' : f'{str(current_time)}',
+			'state' : 'processing'})
+		
 	else:
-		return HttpResponse('Invalid token')
+		return Response({'code' : 'Wrong api token'})
+
+
+
